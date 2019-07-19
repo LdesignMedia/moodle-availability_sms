@@ -49,11 +49,10 @@ function availability_sms_before_http_headers() {
     }
 
     $blockcourseaccess = get_config('availability_sms', 'course_popup');
-
     if (empty($blockcourseaccess) || $PAGE->user_allowed_editing()) {
         return;
     }
 
-    // Show verify popup.
+    // Show verify page/popup.
     \availability_sms\helper::show_sms_page($COURSE->id);
 }
