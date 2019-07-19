@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Front-end class
+ * SMS provider wrapper
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -25,37 +25,42 @@
  **/
 
 namespace availability_sms;
+use availability_sms\proxy\cm;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * Class frontend
+ * Class sms
  *
- * @package   availability_sms
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
+ * @package availability_sms
  */
-class frontend extends \core_availability\frontend {
+final class sms {
 
     /**
-     * get_javascript_strings
-     *
-     * @return array
+     * @var cm
      */
-    protected function get_javascript_strings() {
-        return [];
+    private $provider;
+
+    /**
+     * sms constructor.
+     */
+    public function __construct() {
+        // Load the selected proxy.
+
+        // For now only 1 provider supported.
+        $this->provider = new cm();
     }
 
     /**
-     * Decides whether this plugin should be available in a given course. The
-     * plugin can do this depending on course or system settings.
+     * Send a SMS
      *
-     * @param \stdClass     $course  Course object
-     * @param \cm_info      $cm      Course-module currently being edited (null if none)
-     * @param \section_info $section Section currently being edited (null if none)
+     * @param \stdClass $user
+     * @param string    $message
      *
-     * @return bool True if there are completion criteria
+     * @throws \moodle_exception
      */
-    protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
-        return true;
+    public function send(\stdClass $user , string $message = '') {
+        $this->provider->send_sms($user->selected_phone , $message);
     }
+
 }

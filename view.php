@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * EN language file.
+ * Enter SMS token page.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -23,18 +23,3 @@
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
-$string['pluginname'] = 'SMS availability';
-$string['title'] = 'SMS availability';
-$string['description'] = 'Restrict access by SMS verfication';
-$string['require_condition'] = 'SMS code has been validated';
-
-// Privacy provider.
-$string['privacy:metadata'] = 'The restriction by activity SMS plugin does not store any personal data.';
-
-// Settings.
-$string['setting:course_popup'] = 'Force SMS verfication on course level';
-$string['setting:course_popup_desc'] = 'If enabled the course can\'t be viewed till a valid SMS is entered.';
-$string['setting:cm_producttoken'] = 'CM telecom Product Token';
-$string['setting:cm_producttoken_desc'] = 'Gateway credentials';
-$string['setting:cm_sender'] = 'Sender';
-$string['setting:cm_sender_desc'] = ' This is the sender name. The maximum length is 11 alphanumerical characters or 16 digits. Example: \'CM Telecom\'';

@@ -11,7 +11,10 @@ Restrict access to any activity by a validation SMS.
 [![Build Status](https://travis-ci.org/MFreakNL/moodle-availability_sms.svg?branch=master)](https://travis-ci.org/MFreakNL/moodle-availability_sms)
 
 ## List of features
-- Todo 
+- Implements cmtelecoms Messaging provider API
+- Authenticated for the duration of the session
+- Blocking popup prevent doing other things in the course
+- Using user there phone field for SMS
 
 ## Installation
 1.  Copy this plugin to the `availability\condition\sms` folder on the server

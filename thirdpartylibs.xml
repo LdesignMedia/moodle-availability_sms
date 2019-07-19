@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>vendor/</location>
+        <name>CM Text SDK</name>
+        <version>1.1.2</version>
+        <license>MIT</license>
+        <licenseversion>1.0</licenseversion>
+    </library>
+    <library>
+        <location>vendor/</location>
+        <name>https://github.com/giggsey/libphonenumber-for-php</name>
+        <version>8.10.15</version>
+        <license>Apache License</license>
+        <licenseversion>2.0</licenseversion>
+    </library>
+</libraries>

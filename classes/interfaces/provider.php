@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Front-end class
+ * Every provider should implement this interface.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -23,39 +23,25 @@
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
-
-namespace availability_sms;
+namespace availability_sms\interfaces;
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * Class frontend
+ * Interface provider
  *
  * @package   availability_sms
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  */
-class frontend extends \core_availability\frontend {
+interface provider{
 
     /**
-     * get_javascript_strings
+     * send_sms
      *
-     * @return array
+     * @param string $country
+     * @param string $phone
+     * @param string $message
+     *
+     * @return mixed
      */
-    protected function get_javascript_strings() {
-        return [];
-    }
-
-    /**
-     * Decides whether this plugin should be available in a given course. The
-     * plugin can do this depending on course or system settings.
-     *
-     * @param \stdClass     $course  Course object
-     * @param \cm_info      $cm      Course-module currently being edited (null if none)
-     * @param \section_info $section Section currently being edited (null if none)
-     *
-     * @return bool True if there are completion criteria
-     */
-    protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
-        return true;
-    }
+    public function send_sms(string $country , string $phone , string $message = '');
 }

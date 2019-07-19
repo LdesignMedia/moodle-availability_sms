@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   availability_sms
- * @copyright 2019-05-14 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
+ * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
 

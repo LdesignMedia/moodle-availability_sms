@@ -15,7 +15,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * EN language file.
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -23,18 +22,38 @@
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
-$string['pluginname'] = 'SMS availability';
-$string['title'] = 'SMS availability';
-$string['description'] = 'Restrict access by SMS verfication';
-$string['require_condition'] = 'SMS code has been validated';
 
-// Privacy provider.
-$string['privacy:metadata'] = 'The restriction by activity SMS plugin does not store any personal data.';
+defined('MOODLE_INTERNAL') || die;
 
-// Settings.
-$string['setting:course_popup'] = 'Force SMS verfication on course level';
-$string['setting:course_popup_desc'] = 'If enabled the course can\'t be viewed till a valid SMS is entered.';
-$string['setting:cm_producttoken'] = 'CM telecom Product Token';
-$string['setting:cm_producttoken_desc'] = 'Gateway credentials';
-$string['setting:cm_sender'] = 'Sender';
-$string['setting:cm_sender_desc'] = ' This is the sender name. The maximum length is 11 alphanumerical characters or 16 digits. Example: \'CM Telecom\'';
+/**
+ * This hook was introduced in moodle 3.3.
+ *
+ * @throws dml_exception
+ * @throws coding_exception
+ * @throws moodle_exception
+ */
+function availability_sms_before_http_headers() {
+    global $PAGE, $COURSE;
+
+    if ($PAGE->url->get_path() !== '/course/view.php') {
+        return;
+    }
+
+    if (\availability_sms\helper::course_has_sms_condition($COURSE->id) === false) {
+        return;
+    }
+
+    // Check if popup validation required.
+    if (\availability_sms\helper::user_has_verified_sms($COURSE->id) === true) {
+        return;
+    }
+
+    $blockcourseaccess = get_config('availability_sms', 'course_popup');
+
+    if (empty($blockcourseaccess) || $PAGE->user_allowed_editing()) {
+        return;
+    }
+
+    // Show verify popup.
+    \availability_sms\helper::show_sms_page($COURSE->id);
+}

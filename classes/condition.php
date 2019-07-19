@@ -20,7 +20,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @package   availability_sms
- * @copyright 2019-05-14 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
+ * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
 
@@ -35,14 +35,9 @@ defined('MOODLE_INTERNAL') || die;
  *
  * @package   availability_sms
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @copyright 2019-05-14 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
+ * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  */
 class condition extends \core_availability\condition {
-
-    /**
-     * @var string
-     */
-    protected $ipaddresses = '';
 
     /**
      * condition constructor.
@@ -50,9 +45,6 @@ class condition extends \core_availability\condition {
      * @param \stdClass $structure
      */
     public function __construct($structure) {
-        if (isset($structure->ipaddresses)) {
-            $this->ipaddresses = $structure->ipaddresses;
-        }
     }
 
     /**
@@ -81,14 +73,7 @@ class condition extends \core_availability\condition {
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
 
-        if (empty($this->ipaddresses)) {
-            return true;
-        }
-
-        // Check if ip-address matches.
-        if (address_in_subnet(getremoteaddr(), trim($this->ipaddresses))) {
-            return true;
-        }
+        // Check if Session has a verified code.
 
         return false;
     }
@@ -129,7 +114,7 @@ class condition extends \core_availability\condition {
      * @return string Text representation of parameters
      */
     protected function get_debug_string() {
-        return !empty($this->ipaddresses) ? 'ipaddresses ON' : 'ipaddresses OFF';
+        return 'sms ON';
     }
 
     /**
@@ -138,34 +123,12 @@ class condition extends \core_availability\condition {
      * Intended for unit testing, as normally the JSON values are constructed
      * by JavaScript code.
      *
-     * @param string $ipaddresses
-     *
      * @return \stdClass Object representing condition
      */
-    public static function get_json($ipaddresses) {
+    public static function get_json() {
         return (object)[
-            'type' => 'ipaddress',
-            'ipaddresses' => $ipaddresses,
+            'type' => 'sms',
         ];
-    }
-
-    /**
-     * Check if ip-address is valid
-     *
-     * @param string $ipaddresses
-     *
-     * @return bool
-     */
-    public static function is_valid_ipaddresses($ipaddresses) {
-        $ipaddresses = implode(',', $ipaddresses);
-        foreach ($ipaddresses as $ipaddress) {
-            if (!filter_var($ipaddress, FILTER_VALIDATE_IP)) {
-                return false;
-            }
-        }
-
-        return true;
-
     }
 
     /**
@@ -175,8 +138,7 @@ class condition extends \core_availability\condition {
      */
     public function save() {
         return (object)[
-            'type' => 'ipaddress',
-            'ipaddresses' => $this->ipaddresses,
+            'type' => 'sms',
         ];
     }
 }
