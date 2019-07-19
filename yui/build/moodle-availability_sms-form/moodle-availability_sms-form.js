@@ -97,8 +97,6 @@ M.availability_sms.form.fillErrors = function(errors, node) {
     "use strict";
     var value = {};
     this.fillValue(value, node);
-
-    //     errors.push('availability_sms:error');
 };
 
 }, '@VERSION@', {"requires": ["base", "node", "event", "moodle-core_availability-form"]});
