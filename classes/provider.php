@@ -73,11 +73,10 @@ abstract class provider implements interfaces\provider {
         if (empty($message)) {
             throw new \moodle_exception('error:empty_message', 'availability_sms');
         }
+
         if (empty($country)) {
             throw new \moodle_exception('error:empty_country', 'availability_sms');
         }
-
-        // Verify it's a valid phone number.
     }
 
     /**
@@ -108,6 +107,7 @@ abstract class provider implements interfaces\provider {
             throw new $e;
         }
 
+        // Verify it's a valid phone number.
         if ($phoneutil->isValidNumber($phone) == false) {
             throw new moodle_exception('error:invalid_phone', 'availability_sms');
         }
@@ -132,13 +132,6 @@ abstract class provider implements interfaces\provider {
         }
 
         return $message;
-    }
-
-    /**
-     *
-     */
-    public function generate_code() {
-
     }
 
 }

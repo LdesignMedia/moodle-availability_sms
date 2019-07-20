@@ -23,3 +23,49 @@
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
+require_once('../../../config.php');
+defined('MOODLE_INTERNAL') || die;
+
+$courseid = required_param('courseid', PARAM_INT);
+$action = optional_param('action', '', PARAM_TEXT);
+
+$course = $DB->get_record('course', ['id' => $courseid]);
+require_login($course);
+
+$PAGE->set_url('/availability/condition/sms/view.php', [
+    'courseid' => $courseid,
+    'action' => $action,
+]);
+$PAGE->set_title($course->fullname);
+$PAGE->set_heading($course->fullname);
+
+switch ($action) {
+
+    case 'validate':
+        $form = new \availability_sms\form\form_sms_code($PAGE->url);
+        if (($data = $form->get_data()) != false) {
+            $status = \availability_sms\helper::validate_sms_code($data);
+            if ($status) {
+                redirect(new moodle_url('/course/view.php', ['id' => $COURSE->id]));
+            }
+        }
+        break;
+
+    default:
+        $form = new \availability_sms\form\form_sms_request($PAGE->url);
+
+        if (($data = $form->get_data()) != false) {
+            \availability_sms\helper::request_sms($data);
+            redirect(new moodle_url('/availability/condition/sms/view.php', [
+                'action' => 'validate',
+                'courseid' => $courseid,
+            ]));
+        }
+}
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('header:sms_validation', 'availability_sms'));
+
+echo $form->render();
+
+echo $OUTPUT->footer();

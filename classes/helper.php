@@ -25,6 +25,7 @@
  **/
 
 namespace availability_sms;
+require_once($CFG->dirroot . '/user/lib.php');
 
 use core_availability\info_module;
 use moodle_exception;
@@ -76,8 +77,8 @@ class helper {
     public static function get_token($length, $prefix = '-') : string {
 
         $token = "";
-        $codealphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codealphabet .= "0123456789";
+        $codealphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+
         for ($i = 0; $i < $length; $i++) {
             if ($i % 2 === 0 && $i > 0) {
                 $token .= $prefix;
@@ -126,7 +127,7 @@ class helper {
     public static function show_sms_page(int $courseid) {
 
         redirect(new \moodle_url('/availability/condition/sms/view.php', [
-            'course' => $courseid
+            'courseid' => $courseid,
         ]));
     }
 
@@ -147,4 +148,80 @@ class helper {
         return false;
 
     }
+
+    /**
+     * Request a new SMS
+     *
+     * @param $data
+     *
+     * @return bool
+     * @throws moodle_exception
+     */
+    public static function request_sms($data) : bool {
+        global $USER, $SESSION;
+
+        // Allow 1 every 1 minutes.
+        if (!empty($SESSION->availability_sms_time) &&
+            $SESSION->availability_sms_time > (time() - 1 * 60)) {
+            return false;
+        }
+
+        // Update user there phone1.
+        user_update_user((object)[
+            'id' => $USER->id,
+            'phone1' => $data->phone,
+        ]);
+        $USER->phone1 = $data->phone;
+
+        // Generate a token.
+        $token = self::get_token(8);
+        $SESSION->availability_sms_token = self::code_simplify($token);
+        $SESSION->availability_sms_time = time(); // Prevent requesting multiple sms in shorttime.
+
+        // Send SMS.
+        $sms = new sms();
+        $sms->send($USER, get_string('sms:token', 'availability_sms', (object)[
+            'token' => $token,
+        ]));
+
+        return true;
+    }
+
+    /**
+     * Validate SMS code
+     *
+     * @param \stdClass $data
+     *
+     * @return bool
+     */
+    public static function validate_sms_code(\stdClass $data) : bool {
+        global $SESSION , $COURSE;
+        if (empty($SESSION->availability_sms_token)) {
+            return false;
+        }
+
+        $data->code = self::code_simplify($data->code);
+
+        if ($data->code == $SESSION->availability_sms_token) {
+
+            $SESSION->availability_sms[$COURSE->id] = true;
+            unset($SESSION->availability_sms_token);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * code_simplify
+     *
+     * @param $code
+     *
+     * @return string
+     */
+    public static function code_simplify($code) : string {
+        return strtoupper(str_replace('-', '', $code));
+    }
+
 }

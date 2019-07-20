@@ -25,12 +25,10 @@
  * @author    Luuk Verhoeven
  **/
 
-namespace availability_sms\proxy;
+namespace availability_sms\provider;
 
 use availability_sms\provider;
 use CMText\TextClient;
-use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberUtil;
 use moodle_exception;
 
 defined('MOODLE_INTERNAL') || die;
@@ -56,26 +54,27 @@ class cm extends provider {
     public function send_sms(string $country, string $phone, string $message = '') {
 
         // Validation.
-        parent::send_sms($phone, $message);
+        parent::send_sms($country, $phone, $message);
 
         // Send SMS.
-        require_once __DIR__ . '/../../vendor/autoload.php';
+        require_once(__DIR__ . '/../../vendor/autoload.php');
         $config = $this->config;
         $client = new TextClient($config->cm_producttoken);
 
         $message = $this->parse_message($message);
         $phone = $this->parse_phone_number($phone, $country);
 
-        if (strlen($config->cm_sender_ > 11)) {
+        if (strlen($config->cm_sender > 11)) {
             throw new moodle_exception('error:sender_length', 'availability_sms');
         }
 
-        $result = $client->SendMessage($message, $config->cm_producttoken, [$phone], $config->cm_sender);
+        $result = $client->SendMessage($message, $config->cm_sender, [$phone]);
 
-        echo '<pre>';
-        print_r($result);
-        echo '</pre>';
-        die(__LINE__ . ' ' . __FILE__);
+        if ($result->statusCode != 0 && !empty($result->statusMessage)) {
+            throw new \Exception($result->statusMessage);
+        }
+
+        return true;
     }
 
 }

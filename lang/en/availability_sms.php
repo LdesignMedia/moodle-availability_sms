@@ -38,3 +38,24 @@ $string['setting:cm_producttoken'] = 'CM telecom Product Token';
 $string['setting:cm_producttoken_desc'] = 'Gateway credentials';
 $string['setting:cm_sender'] = 'Sender';
 $string['setting:cm_sender_desc'] = ' This is the sender name. The maximum length is 11 alphanumerical characters or 16 digits. Example: \'CM Telecom\'';
+
+// Headers.
+$string['header:sms_validation'] = 'SMS verification required';
+
+// Button.
+$string['btn:request'] = 'Request a code';
+$string['btn:validate'] = 'Validate SMS code';
+
+// Form.
+$string['form:placeholder_phone1'] = '06 22 22 22 22';
+$string['form:phone1'] = 'Phone';
+$string['form:code'] = 'Authentication code';
+
+// Text.
+$string['text:request_new'] = 'An SMS has been sent to {$a->phone1} with a authentication code.';
+
+// Errors
+$string['error:phone_missing'] = 'You must add a valid phone number to your profile.';
+
+// Sms.
+$string['sms:token'] = '{$a->token} is your authentication code.';
