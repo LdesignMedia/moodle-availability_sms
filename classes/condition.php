@@ -72,8 +72,11 @@ class condition extends \core_availability\condition {
      * @return bool True if available
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
+        global $SESSION, $COURSE;
 
-        // Check if Session has a verified code.
+        if (!empty($SESSION->availability_sms[$COURSE->id])) {
+            return true;
+        }
 
         return false;
     }
