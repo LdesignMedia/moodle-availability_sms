@@ -25,12 +25,12 @@
  **/
 
 namespace availability_sms;
+defined('MOODLE_INTERNAL') || die;
+
 require_once($CFG->dirroot . '/user/lib.php');
 
 use core_availability\info_module;
 use moodle_exception;
-
-defined('MOODLE_INTERNAL') || die;
 
 /**
  * Class helper
@@ -195,7 +195,7 @@ class helper {
      * @return bool
      */
     public static function validate_sms_code(\stdClass $data) : bool {
-        global $SESSION , $COURSE;
+        global $SESSION, $COURSE;
         if (empty($SESSION->availability_sms_token)) {
             return false;
         }
