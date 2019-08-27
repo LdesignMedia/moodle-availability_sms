@@ -44,10 +44,8 @@ switch ($action) {
     case 'validate':
         $form = new \availability_sms\form\form_sms_code($PAGE->url);
         if (($data = $form->get_data()) != false) {
-            $status = \availability_sms\helper::validate_sms_code($data);
-            if ($status) {
-                redirect(new moodle_url('/course/view.php', ['id' => $COURSE->id]));
-            }
+            redirect(new moodle_url('/course/view.php', ['id' => $COURSE->id]) ,
+                get_string('text:success_enter_course' , 'availability_sms') , 5);
         }
         break;
 

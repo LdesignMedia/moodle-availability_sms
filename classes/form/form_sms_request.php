@@ -91,17 +91,25 @@ class form_sms_request extends \moodleform {
             throw new moodle_exception('error:country_missing', 'availability_sms');
         }
 
+        if (empty($data['phone'])) {
+            $errors['phone'] = get_string('error:invalid_phone', 'availability_sms');
+
+            return $errors;
+        }
+
         $phoneutil = PhoneNumberUtil::getInstance();
 
         try {
             $phone = $phoneutil->parse($data['phone'], $USER->country);
         } catch (NumberParseException $e) {
-            throw new $e;
+            $errors['phone'] = 'Error: ' . $e->getMessage();
+
+            return $errors;
         }
 
         // Verify it's a valid phone number.
         if ($phoneutil->isValidNumber($phone) == false) {
-            $errors['phone1'] = get_string('error:invalid_phone', 'availability_sms');
+            $errors['phone'] = get_string('error:invalid_phone', 'availability_sms');
         }
 
         return $errors;

@@ -53,9 +53,12 @@ $string['form:code'] = 'Authentication code';
 
 // Text.
 $string['text:request_new'] = 'An SMS has been sent to {$a->phone1} with a authentication code.';
+$string['text:success_enter_course'] = 'SMS validation successful. You can now approach the course.';
 
 // Errors
 $string['error:phone_missing'] = 'You must add a valid phone number to your profile.';
+$string['error:country_missing'] = 'Country code missing in user profile';
+$string['error:incorrect_code'] = 'Error: incorrect SMS code entered.';
 
 // Sms.
 $string['sms:token'] = '{$a->token} is your authentication code.';

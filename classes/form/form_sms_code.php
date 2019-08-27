@@ -59,8 +59,32 @@ class form_sms_code extends \moodleform {
             'placeholder' => 'XX-XX-XX-XX',
         ]);
         $mform->setType('code', PARAM_TEXT);
+        $mform->addRule('code', null, 'required', null, 'client');
 
         $this->add_action_buttons(false, get_string('btn:validate', 'availability_sms'));
 
     }
+
+    /**
+     * validation
+     *
+     * @param array $data
+     * @param array $files
+     *
+     * @return array
+     * @throws \coding_exception
+     * @throws moodle_exception
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        $status = \availability_sms\helper::validate_sms_code((object) $data);
+
+        if(empty($status)){
+            $errors['code'] = get_string('error:incorrect_code' , 'availability_sms');
+        }
+
+        return $errors;
+
+    }
+
 }

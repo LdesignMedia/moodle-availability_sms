@@ -158,7 +158,7 @@ class helper {
      * @throws moodle_exception
      */
     public static function request_sms($data) : bool {
-        global $USER, $SESSION;
+        global $USER, $SESSION , $DB , $COURSE;
 
         // Allow 1 every 1 minutes.
         if (!empty($SESSION->availability_sms_time) &&
@@ -183,6 +183,15 @@ class helper {
         $sms->send($USER, get_string('sms:token', 'availability_sms', (object)[
             'token' => $token,
         ]));
+
+        // Save entered phone to the DB.
+        $DB->insert_record('availability_sms', (object) [
+            'userid' => $USER->id,
+            'phone' => $data->phone,
+            'course' => $COURSE->id,
+            'timecreated' => time(),
+        ]);
+
 
         return true;
     }
