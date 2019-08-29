@@ -72,9 +72,10 @@ class condition extends \core_availability\condition {
      * @return bool True if available
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
-        global $SESSION, $COURSE;
+        global $SESSION;
 
-        if (!empty($SESSION->availability_sms[$COURSE->id])) {
+        $course = $info->get_course();
+        if (!empty($SESSION->availability_sms[$course->id])) {
             return true;
         }
 
