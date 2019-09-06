@@ -59,6 +59,8 @@ class form_sms_request extends \moodleform {
                 get_string('error:phone_missing', 'availability_sms'), 'alert alert-warning'));
         }
 
+        $mform->addElement('static', '1567780487486', '', \html_writer::div(get_string('text:phone_description' , 'availability_sms') , ''));
+
         $mform->addElement('text', 'phone', get_string('form:phone1', 'availability_sms'), [
             'style' => 'width:100%',
             'placeholder' => get_string('form:placeholder_phone1', 'availability_sms'),
