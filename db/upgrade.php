@@ -52,4 +52,6 @@ function xmldb_availability_sms_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019082700, 'availability', 'sms');
     }
 
+    return true;
+
 }

@@ -38,6 +38,8 @@ $PAGE->set_url('/availability/condition/sms/view.php', [
 ]);
 $PAGE->set_title($course->fullname);
 $PAGE->set_heading($course->fullname);
+$PAGE->requires->js('/availability/condition/sms/javascript/helper.js');
+
 
 switch ($action) {
 
