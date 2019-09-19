@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'availability_sms';
-$plugin->version = 2019090601;
+$plugin->version = 2019091900;
 $plugin->release = 'v3.5.1';
 $plugin->requires = 2016120500;
 $plugin->maturity = MATURITY_BETA;

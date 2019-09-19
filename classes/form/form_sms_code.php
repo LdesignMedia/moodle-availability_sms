@@ -27,6 +27,11 @@
 namespace availability_sms\form;
 
 
+use availability_sms\helper;
+use coding_exception;
+use html_writer;
+use moodleform;
+
 defined('MOODLE_INTERNAL') || die;
 
 global $CFG;
@@ -40,10 +45,10 @@ require_once($CFG->libdir . '/formslib.php');
  * @package   availability_sms
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  */
-class form_sms_code extends \moodleform {
+class form_sms_code extends moodleform {
 
     /**
-     * @throws \coding_exception
+     * @throws coding_exception
      */
     protected function definition() {
         global $USER;
@@ -52,7 +57,7 @@ class form_sms_code extends \moodleform {
         $mform->addElement('hidden', 'phone');
         $mform->setType('phone', PARAM_ALPHANUM);
 
-        $mform->addElement('static', 'phone_send', '', \html_writer::div(
+        $mform->addElement('static', 'phone_send', '', html_writer::div(
             get_string('text:request_new', 'availability_sms', $USER), 'alert alert-warning'));
 
         $mform->addElement('text', 'code', get_string('form:code', 'availability_sms'), [
@@ -72,12 +77,15 @@ class form_sms_code extends \moodleform {
      * @param array $files
      *
      * @return array
-     * @throws \coding_exception
+     * @throws coding_exception
      * @throws moodle_exception
      */
     public function validation($data, $files) {
+        global $PAGE;
         $errors = parent::validation($data, $files);
-        $status = \availability_sms\helper::validate_sms_code((object) $data);
+
+        $data['contextid'] = $PAGE->url->param('contextid');
+        $status = helper::validate_sms_code((object) $data);
 
         if(empty($status)){
             $errors['code'] = get_string('error:incorrect_code' , 'availability_sms');

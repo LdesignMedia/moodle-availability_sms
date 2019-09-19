@@ -27,6 +27,7 @@ require_once('../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
 $courseid = required_param('courseid', PARAM_INT);
+$contextid = required_param('contextid', PARAM_INT);
 $action = optional_param('action', '', PARAM_TEXT);
 
 $course = $DB->get_record('course', ['id' => $courseid]);
@@ -35,17 +36,23 @@ require_login($course);
 $PAGE->set_url('/availability/condition/sms/view.php', [
     'courseid' => $courseid,
     'action' => $action,
+    'contextid' => $contextid,
 ]);
+
 $PAGE->set_title($course->fullname);
 $PAGE->set_heading($course->fullname);
 $PAGE->requires->js('/availability/condition/sms/javascript/helper.js');
-
 
 switch ($action) {
 
     case 'validate':
         $form = new \availability_sms\form\form_sms_code($PAGE->url);
         if (($data = $form->get_data()) != false) {
+
+            if(!empty($SESSION->wantsurl)){
+                redirect($SESSION->wantsurl);
+            }
+
             redirect(new moodle_url('/course/view.php', ['id' => $COURSE->id]) ,
                 get_string('text:success_enter_course' , 'availability_sms') , 5);
         }
@@ -55,10 +62,12 @@ switch ($action) {
         $form = new \availability_sms\form\form_sms_request($PAGE->url);
 
         if (($data = $form->get_data()) != false) {
+            $data->contextid = $contextid;
             \availability_sms\helper::request_sms($data);
             redirect(new moodle_url('/availability/condition/sms/view.php', [
                 'action' => 'validate',
                 'courseid' => $courseid,
+                'contextid' => $contextid,
             ]));
         }
 }

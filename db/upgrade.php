@@ -52,6 +52,21 @@ function xmldb_availability_sms_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019082700, 'availability', 'sms');
     }
 
+    if ($oldversion < 2019091900) {
+
+        // Define field contextid to be added to availability_sms.
+        $table = new xmldb_table('availability_sms');
+        $field = new xmldb_field('contextid', XMLDB_TYPE_INTEGER, '11', null, null, null, '0', 'userid');
+
+        // Conditionally launch add field contextid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Sms savepoint reached.
+        upgrade_plugin_savepoint(true, 2019091900, 'availability', 'sms');
+    }
+
     return true;
 
 }

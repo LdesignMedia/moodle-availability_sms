@@ -189,6 +189,7 @@ class helper {
             'userid' => $USER->id,
             'phone' => $data->phone,
             'course' => $COURSE->id,
+            'contextid' => $data->contextid,
             'timecreated' => time(),
         ]);
 
@@ -213,7 +214,7 @@ class helper {
 
         if ($data->code == $SESSION->availability_sms_token) {
 
-            $SESSION->availability_sms[$COURSE->id] = true;
+            $SESSION->availability_sms[$COURSE->id][$data->contextid] = true;
             unset($SESSION->availability_sms_token);
 
             return true;

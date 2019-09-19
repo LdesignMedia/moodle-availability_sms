@@ -74,8 +74,9 @@ class condition extends \core_availability\condition {
     public function is_available($not, info $info, $grabthelot, $userid) {
         global $SESSION;
 
+        $contextid = $info->get_context()->id;
         $course = $info->get_course();
-        if (!empty($SESSION->availability_sms[$course->id])) {
+        if (!empty($SESSION->availability_sms[$course->id][$contextid])) {
             return true;
         }
 
@@ -106,8 +107,27 @@ class condition extends \core_availability\condition {
      * @return string Information string (for admin) about all restrictions on
      *   this item
      * @throws \coding_exception
+     * @throws \moodle_exception
      */
     public function get_description($full, $not, info $info) {
+        global $SESSION, $PAGE;
+
+        $contextid = $info->get_context()->id;
+        $course = $info->get_course();
+        if (!empty($SESSION->availability_sms[$course->id][$contextid])) {
+            return '';
+        }
+
+        // Redirect if false and not the course page.
+        if (stristr($PAGE->url->get_path(), '/mod/')) {
+
+            $SESSION->wantsurl = $PAGE->url->out(false);
+            redirect(new \moodle_url('/availability/condition/sms/view.php', [
+                'courseid' => $course->id,
+                'contextid' => $contextid,
+            ]));
+        }
+
         return get_string('require_condition', 'availability_sms');
     }
 
