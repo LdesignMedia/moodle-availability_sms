@@ -52,6 +52,7 @@ class cm extends provider {
      * @throws moodle_exception
      */
     public function send_sms(string $country, string $phone, string $message = '') {
+        global $SITE;
 
         // Validation.
         parent::send_sms($country, $phone, $message);
@@ -64,11 +65,7 @@ class cm extends provider {
         $message = $this->parse_message($message);
         $phone = $this->parse_phone_number($phone, $country);
 
-        if (strlen($config->cm_sender > 11)) {
-            throw new moodle_exception('error:sender_length', 'availability_sms');
-        }
-
-        $result = $client->SendMessage($message, $config->cm_sender, [$phone]);
+        $result = $client->SendMessage($message, $SITE->fullname, [$phone]);
 
         if ($result->statusCode != 0 && !empty($result->statusMessage)) {
             throw new \Exception($result->statusMessage);

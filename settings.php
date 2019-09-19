@@ -39,11 +39,4 @@ if ($hassiteconfig && !empty($CFG->enableavailability)) {
         new lang_string('setting:cm_producttoken_desc', 'availability_sms'),
         '00000000-0000-0000-0000-000000000000'
     ));
-
-    $settings->add(new admin_setting_configtext(
-        'availability_sms/cm_sender',
-        new lang_string('setting:cm_sender', 'availability_sms'),
-        new lang_string('setting:cm_sender_desc', 'availability_sms'),
-        'Sample'
-    ));
 }
