@@ -118,6 +118,7 @@ class condition extends \core_availability\condition {
             return '';
         }
 
+
         // Redirect if false and not the course page.
         if (stristr($PAGE->url->get_path(), '/mod/')) {
 

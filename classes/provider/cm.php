@@ -65,7 +65,7 @@ class cm extends provider {
         $message = $this->parse_message($message);
         $phone = $this->parse_phone_number($phone, $country);
 
-        $result = $client->SendMessage($message, $SITE->fullname, [$phone]);
+        $result = $client->SendMessage($message, $SITE->shortname, [$phone]);
 
         if ($result->statusCode != 0 && !empty($result->statusMessage)) {
             throw new \Exception($result->statusMessage);
