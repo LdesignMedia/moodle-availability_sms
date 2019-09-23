@@ -114,6 +114,11 @@ class condition extends \core_availability\condition {
 
         $contextid = $info->get_context()->id;
         $course = $info->get_course();
+
+        if(has_capability('moodle/site:config', \context_system::instance())){
+            return '';
+        }
+
         if (!empty($SESSION->availability_sms[$course->id][$contextid])) {
             return '';
         }
