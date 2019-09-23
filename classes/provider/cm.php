@@ -65,6 +65,10 @@ class cm extends provider {
         $message = $this->parse_message($message);
         $phone = $this->parse_phone_number($phone, $country);
 
+        if(strlen($SITE->shortname) > 11){
+            print_error('error:sendername_to_long' , 'availability_sms' , ['shortname' => $SITE->shortname]);
+        }
+
         $result = $client->SendMessage($message, $SITE->shortname, [$phone]);
 
         if ($result->statusCode != 0 && !empty($result->statusMessage)) {
