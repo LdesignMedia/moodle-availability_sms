@@ -70,14 +70,33 @@ class condition extends \core_availability\condition {
      * @param int  $userid     User ID to check availability for
      *
      * @return bool True if available
+     * @throws \coding_exception
+     * @throws \moodle_exception
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
-        global $SESSION;
+        global $SESSION, $PAGE;
 
         $contextid = $info->get_context()->id;
         $course = $info->get_course();
+
+        if (has_capability('moodle/site:manageblocks', $info->get_context())) {
+            return true;
+        }
+
         if (!empty($SESSION->availability_sms[$course->id][$contextid])) {
             return true;
+        }
+
+        // Redirect if not the course page and id matches instance..
+        $id = optional_param('id', 0, PARAM_INT);
+        if (stristr($PAGE->url->get_path(), '/mod/') &&
+            $info->get_context()->instanceid == $id) {
+
+            $SESSION->wantsurl = $PAGE->url->out(false);
+            redirect(new \moodle_url('/availability/condition/sms/view.php', [
+                'courseid' => $course->id,
+                'contextid' => $contextid,
+            ]));
         }
 
         return false;
@@ -110,30 +129,6 @@ class condition extends \core_availability\condition {
      * @throws \moodle_exception
      */
     public function get_description($full, $not, info $info) {
-        global $SESSION, $PAGE;
-
-        $contextid = $info->get_context()->id;
-        $course = $info->get_course();
-
-        if($PAGE->user_allowed_editing()){
-            return '';
-        }
-
-        if (!empty($SESSION->availability_sms[$course->id][$contextid])) {
-            return '';
-        }
-
-
-        // Redirect if false and not the course page.
-        if (stristr($PAGE->url->get_path(), '/mod/')) {
-
-            $SESSION->wantsurl = $PAGE->url->out(false);
-            redirect(new \moodle_url('/availability/condition/sms/view.php', [
-                'courseid' => $course->id,
-                'contextid' => $contextid,
-            ]));
-        }
-
         return get_string('require_condition', 'availability_sms');
     }
 
