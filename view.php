@@ -49,12 +49,12 @@ switch ($action) {
         $form = new \availability_sms\form\form_sms_code($PAGE->url);
         if (($data = $form->get_data()) != false) {
 
-            if(!empty($SESSION->wantsurl)){
+            if (!empty($SESSION->wantsurl)) {
                 redirect($SESSION->wantsurl);
             }
 
-            redirect(new moodle_url('/course/view.php', ['id' => $COURSE->id]) ,
-                get_string('text:success_enter_course' , 'availability_sms') , 5);
+            redirect(new moodle_url('/course/view.php', ['id' => $COURSE->id]),
+                get_string('text:success_enter_course', 'availability_sms'), 5);
         }
         break;
 
