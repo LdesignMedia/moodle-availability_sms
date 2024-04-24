@@ -26,7 +26,6 @@
 
 namespace availability_sms\form;
 
-
 use availability_sms\helper;
 use coding_exception;
 use html_writer;
@@ -87,8 +86,8 @@ class form_sms_code extends moodleform {
         $data['contextid'] = $PAGE->url->param('contextid');
         $status = helper::validate_sms_code((object) $data);
 
-        if(empty($status)){
-            $errors['code'] = get_string('error:incorrect_code' , 'availability_sms');
+        if (empty($status)) {
+            $errors['code'] = get_string('error:incorrect_code', 'availability_sms');
         }
 
         return $errors;

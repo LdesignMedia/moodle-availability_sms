@@ -67,15 +67,15 @@ abstract class provider implements interfaces\provider {
 
         // Validation.
         if (empty($phone)) {
-            throw new \moodle_exception('error:empty_phone', 'availability_sms');
+            throw new moodle_exception('error:empty_phone', 'availability_sms');
         }
 
         if (empty($message)) {
-            throw new \moodle_exception('error:empty_message', 'availability_sms');
+            throw new moodle_exception('error:empty_message', 'availability_sms');
         }
 
         if (empty($country)) {
-            throw new \moodle_exception('error:empty_country', 'availability_sms');
+            throw new moodle_exception('error:empty_country', 'availability_sms');
         }
     }
 
@@ -91,7 +91,7 @@ abstract class provider implements interfaces\provider {
      * @return string
      * @throws moodle_exception
      */
-    final protected function parse_phone_number(string $phone, string $country) : string {
+    final protected function parse_phone_number(string $phone, string $country): string {
 
         // Start with 00.
         // Country code.

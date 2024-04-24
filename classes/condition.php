@@ -67,7 +67,7 @@ class condition extends \core_availability\condition {
      * @param bool $grabthelot Performance hint: if true, caches information
      *                         required for all course-modules, to make the front page and similar
      *                         pages work more quickly (works only for current user)
-     * @param int  $userid     User ID to check availability for
+     * @param int $userid      User ID to check availability for
      *
      * @return bool True if available
      * @throws \coding_exception
@@ -151,7 +151,7 @@ class condition extends \core_availability\condition {
      * @return \stdClass Object representing condition
      */
     public static function get_json() {
-        return (object)[
+        return (object) [
             'type' => 'sms',
         ];
     }
@@ -162,8 +162,9 @@ class condition extends \core_availability\condition {
      * @return \stdClass Structure object (ready to be made into JSON format)
      */
     public function save() {
-        return (object)[
+        return (object) [
             'type' => 'sms',
         ];
     }
+
 }

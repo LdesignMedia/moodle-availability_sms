@@ -23,6 +23,7 @@
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  * @author    Luuk Verhoeven
  **/
+
 namespace availability_sms\interfaces;
 defined('MOODLE_INTERNAL') || die;
 
@@ -32,7 +33,7 @@ defined('MOODLE_INTERNAL') || die;
  * @package   availability_sms
  * @copyright 2019-07-19 Mfreak.nl | LdesignMedia.nl - Luuk Verhoeven
  */
-interface provider{
+interface provider {
 
     /**
      * send_sms
@@ -43,5 +44,6 @@ interface provider{
      *
      * @return mixed
      */
-    public function send_sms(string $country , string $phone , string $message = '');
+    public function send_sms(string $country, string $phone, string $message = '');
+
 }
