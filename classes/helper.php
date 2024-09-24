@@ -44,7 +44,7 @@ class helper {
     /**
      * crypto_rand_secure
      *
-     * @param int    $min
+     * @param int $min
      * @param string $max
      *
      * @return string
@@ -58,8 +58,8 @@ class helper {
 
         $log = log($range, 2);
         do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes((int)($log / 8) + 1)));
-            $rnd = $rnd & (int)(1 << (int)$log + 1) - 1;
+            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes((int) ($log / 8) + 1)));
+            $rnd = $rnd & (int) (1 << (int) $log + 1) - 1;
         } while ($rnd >= $range);
 
         return $min + $rnd;
@@ -68,13 +68,13 @@ class helper {
     /**
      * get unique code
      *
-     * @param int    $length
+     * @param int $length
      *
      * @param string $prefix
      *
      * @return string
      */
-    public static function get_token($length, $prefix = '-') : string {
+    public static function get_token($length, $prefix = '-'): string {
 
         $token = "";
         $codealphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -97,7 +97,7 @@ class helper {
      * @return bool
      * @throws moodle_exception
      */
-    public static function course_has_sms_condition(int $courseid) : bool {
+    public static function course_has_sms_condition(int $courseid): bool {
         $modinfo = get_fast_modinfo($courseid);
         $activityinstances = $modinfo->get_cms();
 
@@ -138,7 +138,7 @@ class helper {
      *
      * @return bool
      */
-    public static function user_has_verified_sms(int $courseid) : bool {
+    public static function user_has_verified_sms(int $courseid): bool {
         global $SESSION;
 
         if (!empty($SESSION->availability_sms[$courseid])) {
@@ -157,8 +157,8 @@ class helper {
      * @return bool
      * @throws moodle_exception
      */
-    public static function request_sms($data) : bool {
-        global $USER, $SESSION , $DB , $COURSE;
+    public static function request_sms($data): bool {
+        global $USER, $SESSION, $DB, $COURSE;
 
         // Allow 1 every 1 minutes.
         if (!empty($SESSION->availability_sms_time) &&
@@ -167,7 +167,7 @@ class helper {
         }
 
         // Update user there phone1.
-        user_update_user((object)[
+        user_update_user((object) [
             'id' => $USER->id,
             'phone1' => $data->phone,
         ]);
@@ -180,7 +180,7 @@ class helper {
 
         // Send SMS.
         $sms = new sms();
-        $sms->send($USER, get_string('sms:token', 'availability_sms', (object)[
+        $sms->send($USER, get_string('sms:token', 'availability_sms', (object) [
             'token' => $token,
         ]));
 
@@ -193,7 +193,6 @@ class helper {
             'timecreated' => time(),
         ]);
 
-
         return true;
     }
 
@@ -204,7 +203,7 @@ class helper {
      *
      * @return bool
      */
-    public static function validate_sms_code(\stdClass $data) : bool {
+    public static function validate_sms_code(\stdClass $data): bool {
         global $SESSION, $COURSE;
         if (empty($SESSION->availability_sms_token)) {
             return false;
@@ -230,7 +229,7 @@ class helper {
      *
      * @return string
      */
-    public static function code_simplify($code) : string {
+    public static function code_simplify($code): string {
         return strtoupper(str_replace('-', '', $code));
     }
 

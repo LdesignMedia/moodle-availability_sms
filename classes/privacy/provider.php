@@ -44,8 +44,9 @@ class provider implements null_provider {
      *
      * @return  string
      */
-    public static function get_reason() : string {
+    public static function get_reason(): string {
         // @TODO saves phone number.
         return 'privacy:metadata';
     }
+
 }

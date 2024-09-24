@@ -25,6 +25,7 @@
  **/
 
 namespace availability_sms;
+
 use availability_sms\provider\cm;
 
 defined('MOODLE_INTERNAL') || die;
@@ -55,14 +56,14 @@ final class sms {
      * Send a SMS
      *
      * @param \stdClass $user
-     * @param string    $message
+     * @param string $message
      *
      * @return mixed
      * @throws \moodle_exception
      */
-    public function send(\stdClass $user , string $message = '') {
+    public function send(\stdClass $user, string $message = '') {
 
-        return $this->provider->send_sms($user->country , $user->phone1 , $message);
+        return $this->provider->send_sms($user->country, $user->phone1, $message);
     }
 
 }

@@ -41,7 +41,7 @@ function xmldb_availability_sms_upgrade($oldversion) {
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '11', null, null, null, '0');
 
         // Adding keys to table availability_sms.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
         // Conditionally launch create table for availability_sms.
         if (!$dbman->table_exists($table)) {
