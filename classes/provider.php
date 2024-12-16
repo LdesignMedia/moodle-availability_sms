@@ -109,7 +109,7 @@ abstract class provider implements interfaces\provider {
 
         // Verify it's a valid phone number.
         if ($phoneutil->isValidNumber($phone) == false) {
-            throw new moodle_exception('error:invalid_phone', 'availability_sms');
+            throw new moodle_exception('error:invalid_phone', 'availability_sms' , s($phone));
         }
 
         // Check if there are zeros added to the start.

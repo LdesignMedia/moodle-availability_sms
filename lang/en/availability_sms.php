@@ -61,6 +61,7 @@ $string['error:phone_missing'] = 'You must add a valid phone number to your prof
 $string['error:country_missing'] = 'Country code missing in user profile';
 $string['error:incorrect_code'] = 'Error: incorrect SMS code entered.';
 $string['error:sendername_to_long'] = 'Error: the sender name is to long : {$a->shortname}';
+$string['error:invalid_phone'] = 'Error: invalid phone number entered {$a}.';
 
 // Sms.
 $string['sms:token'] = '{$a->token} is your authentication code.';
